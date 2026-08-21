@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jordan Ames — Art &amp; Code</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFFFFF;
+    --ink:#00152D;
+    --art-1:#1F3D5C;
+    --art-2:#B4482F;
+    --art-3:#C9A227;
+    --code-bg:#00152D;
+    --code-bg-2:#1B2124;
+    --off:#FFFFFF;
+    --code-1:#3FA66B;
+    --code-2:#D9A441;
+    --radius:2px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    color:var(--ink);
+    background:var(--paper);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+  button{font:inherit;background:none;border:none;cursor:pointer;color:inherit;}
+  :focus-visible{outline:2px solid currentColor;outline-offset:3px;}
+  [hidden]{display:none !important;}
+  img{max-width:100%;display:block;}
+
+  /* landing page*/
+  #landing{
+    height:100vh;
+    display:flex;
+    position:relative;
+    overflow:hidden;
+  }
+  .half{
+    position:relative;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:2rem;
+    transition:flex-grow .6s cubic-bezier(.22,.9,.3,1);
+  }
+  #landing:has(.half.art:hover) .half.art{flex-grow:1.18;}
+  #landing:has(.half.art:hover) .half.code{flex-grow:.82;}
+  #landing:has(.half.code:hover) .half.code{flex-grow:1.18;}
+  #landing:has(.half.code:hover) .half.art{flex-grow:.82;}
+  .half.art{background:var(--paper);color:var(--ink);}
+  .half.code{background:var(--code-bg);color:var(--off);}
+  .half.code{
+    background-image:
+      repeating-linear-gradient(180deg, rgba(63,166,107,.05) 0px, rgba(63,166,107,.05) 1px, transparent 1px, transparent 3px);
+  }
+  .half-label{
+    font-size:clamp(3rem,10vw,7rem);
+    line-height:.9;
+    margin:0 0 .75rem;
+  }
+  .half.art .half-label{font-family:'Fraunces',serif;font-style:italic;font-weight:500;}
+  .half.code .half-label{font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:-.02em;}
+  .half.code .half-label::before{content:"> ";color:var(--code-1);}
+  .half-tag{
+    max-width:26ch;
+    font-size:.95rem;
+    opacity:.75;
+    margin:0 0 1.75rem;
+  }
+  .half.code .half-tag{font-family:'JetBrains Mono',monospace;font-size:.85rem;}
+  .enter-btn{
+    font-size:.8rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:.85rem 1.6rem;
+    border:1px solid currentColor;
+    border-radius:var(--radius);
+    transition:background .2s, color .2s;
+  }
+  .half.art .enter-btn:hover{background:var(--ink);color:var(--paper);}
+  .half.code .enter-btn:hover{background:var(--code-1);color:var(--code-bg);border-color:var(--code-1);}
+
+  .seam{
+    position:absolute;
+    top:0;bottom:0;left:50%;
+    width:1px;
+    background:linear-gradient(180deg, transparent, rgba(0,0,0,.15), transparent);
+    pointer-events:none;
+  }
+  .signature{
+    position:absolute;
+    top:2.2rem;left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    align-items:baseline;
+    font-size:clamp(1rem,2.4vw,1.4rem);
+    white-space:nowrap;
+    pointer-events:none;
+    z-index:2;
+  }
+  .signature .s-art{font-family:'Fraunces',serif;font-style:italic;color:var(--ink);padding-right:.15em;}
+  .signature .s-code{font-family:'JetBrains Mono',monospace;color:var(--off);background:var(--code-bg);padding:.1em .3em .1em .15em;}
+
+  @media (max-width:640px){
+    #landing{flex-direction:column;}
+    .seam{display:none;}
+    .signature{position:static;transform:none;justify-content:center;padding-top:1.5rem;order:-1;}
+    #landing{padding-top:0;}
+  }
+
+  /* site shell */
+  .site{min-height:100vh;}
+  #art-site{background:var(--paper);color:var(--ink);}
+  #code-site{background:var(--code-bg);color:var(--off);font-family:'JetBrains Mono',monospace;}
+
+  nav.topnav{
+    position:sticky;top:0;z-index:10;
+    display:flex;align-items:center;justify-content:space-between;
+    flex-wrap:wrap;gap:1rem;
+    padding:1.25rem clamp(1.25rem,4vw,3rem);
+    backdrop-filter:blur(6px);
+  }
+  #art-site nav.topnav{background:rgba(241,236,224,.88);border-bottom:1px solid rgba(33,28,22,.1);}
+  #code-site nav.topnav{background:rgba(20,24,26,.9);border-bottom:1px solid rgba(231,236,233,.12);}
+
+  .logo{font-size:1rem;font-weight:600;letter-spacing:.01em;}
+  #art-site .logo{font-family:'Fraunces',serif;font-style:italic;font-size:1.25rem;}
+  #code-site .logo::before{content:"~/";color:var(--code-1);}
+
+  .tabs{display:flex;gap:.4rem;flex-wrap:wrap;}
+  .tabs button{
+    padding:.5rem .9rem;
+    font-size:.82rem;
+    border-radius:var(--radius);
+    letter-spacing:.02em;
+  }
+  #art-site .tabs button{font-family:'Inter',sans-serif;}
+  #art-site .tabs button.active{background:var(--art-1);color:var(--paper);}
+  #art-site .tabs button:not(.active):hover{background:rgba(31,61,92,.1);}
+  #code-site .tabs button{font-family:'JetBrains Mono',monospace;}
+  #code-site .tabs button.active{background:var(--code-1);color:var(--code-bg);}
+  #code-site .tabs button:not(.active):hover{background:rgba(63,166,107,.12);}
+
+  .back-link{font-size:.75rem;opacity:.6;}
+  .back-link:hover{opacity:1;}
+
+  main.panel-wrap{padding:0 clamp(1.25rem,4vw,3rem) 6rem;}
+  .panel{max-width:920px;margin:0 auto;padding-top:3.5rem;}
+
+  /* shared hero bits */
+  .hero h1{
+    font-size:clamp(2.2rem,6vw,4rem);
+    line-height:1.05;
+    margin:0 0 1rem;
+  }
+  #art-site h1{font-family:'Fraunces',serif;font-weight:500;font-style:italic;}
+  #code-site h1{font-family:'JetBrains Mono',monospace;font-weight:700;}
+  .hero p.lede{font-size:1.05rem;max-width:52ch;opacity:.8;margin:0 0 2.5rem;}
+
+  /* art gallery */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.75rem;}
+  .card{
+    background:#fff;
+    border:1px solid rgba(33,28,22,.08);
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:0 1px 2px rgba(33,28,22,.06);
+  }
+  .swatch{aspect-ratio:4/3;position:relative;}
+  .card-body{padding:1rem 1.1rem 1.25rem;}
+  .card-body h3{margin:0 0 .2rem;font-family:'Fraunces',serif;font-size:1.15rem;font-weight:500;}
+  .card-body p{margin:0;font-size:.82rem;opacity:.65;}
+  .teaser-strip{display:flex;gap:1rem;margin-bottom:3rem;flex-wrap:wrap;}
+  .teaser-strip .swatch{width:150px;height:112px;flex:none;border-radius:var(--radius);}
+
+  /* code cards/terminal */
+  .term-line{margin:0 0 .6rem;font-size:.95rem;}
+  .term-line .prompt{color:var(--code-1);}
+  .term-line .out{opacity:.75;}
+  .cursor{display:inline-block;width:.55em;height:1em;background:var(--code-1);vertical-align:text-bottom;animation:blink 1s steps(1) infinite;margin-left:.15em;}
+  @keyframes blink{50%{opacity:0;}}
+  @media (prefers-reduced-motion:reduce){.cursor{animation:none;}}
+
+  .proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem;}
+  .proj-card{
+    background:var(--code-bg-2);
+    border:1px solid rgba(231,236,233,.1);
+    border-radius:var(--radius);
+    padding:1.25rem 1.4rem;
+  }
+  .proj-card h3{margin:0 0 .5rem;font-size:1rem;color:var(--off);}
+  .proj-card p{margin:0 0 1rem;font-size:.82rem;line-height:1.55;opacity:.75;}
+  .tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.9rem;}
+  .tag{font-size:.68rem;padding:.2rem .5rem;border:1px solid rgba(231,236,233,.25);border-radius:20px;opacity:.8;}
+  .proj-link{font-size:.78rem;color:var(--code-1);}
+  .proj-link:hover{text-decoration:underline;}
+
+  .bio{max-width:60ch;line-height:1.75;font-size:1.02rem;}
+  #art-site .bio{opacity:.85;}
+  #code-site .bio{font-size:.92rem;opacity:.85;}
+
+  .skills-block{
+    margin-top:2rem;
+    background:var(--code-bg-2);
+    border:1px solid rgba(231,236,233,.1);
+    border-radius:var(--radius);
+    padding:1.25rem 1.5rem;
+    font-size:.85rem;
+    line-height:1.9;
+  }
+  .skills-block .k{color:var(--code-2);}
+
+  .crosslink{margin-top:4rem;font-size:.8rem;opacity:.6;}
+  .crosslink:hover{opacity:1;}
+
+  footer{padding:2.5rem clamp(1.25rem,4vw,3rem) 3rem;font-size:.75rem;opacity:.5;}
+</style>
+</head>
+<body>
+
+<!-- landing page -->
+<section id="landing">
+  <div class="seam"></div>
+  <div class="signature"><span class="s-art">Jordan</span><span class="s-code">Ames</span></div>
+
+  <div class="half art" tabindex="0">
+    <p class="half-label">Art</p>
+    <p class="half-tag">Watercolor, oil, and digital work — things made slowly, by hand or by light.</p>
+    <a class="enter-btn" href="#/art">Enter</a>
+  </div>
+
+  <div class="half code" tabindex="0">
+    <p class="half-label">Code</p>
+    <p class="half-tag">Research and personal projects — things made precisely, in text.</p>
+    <a class="enter-btn" href="#/code">Enter</a>
+  </div>
+</section>
+
+<!-- art page -->
+<div class="site" id="art-site" hidden>
+  <nav class="topnav">
+    <a class="logo" href="#/">Annabelle Chen</a>
+    <div class="tabs" data-site="art">
+      <button data-tab="home">Home</button>
+      <button data-tab="about">About</button>
+      <button data-tab="watercolor">Watercolor</button>
+      <button data-tab="oil">Oil Paint</button>
+      <button data-tab="digital">Digital</button>
+    </div>
+    <a class="back-link" href="#/">← Both</a>
+  </nav>
+
+  <main class="panel-wrap">
+
+    <section class="panel" data-panel="home">
+      <div class="hero">
+        <h1>Cool heading here</h1>
+        <p class="lede">cool description here</p>
+      </div>
+      <div class="teaser-strip">
+        <div class="swatch" style="background:linear-gradient(135deg,#8fa8b8,#3d5a70);"></div>
+        <div class="swatch" style="background:linear-gradient(135deg,#c98a58,#7a3b2e);"></div>
+        <div class="swatch" style="background:linear-gradient(135deg,#5c6e4a,#2c3520);"></div>
+      </div>
+      <p class="crosslink"><a href="#/code">Looking for the code side instead? →</a></p>
+    </section>
+
+    <section class="panel" data-panel="about" hidden>
+      <div class="hero"><h1>About</h1></div>
+      <p class="bio">small paragraph self glazing my history as an artist</p>
+    </section>
+
+    <section class="panel" data-panel="watercolor" hidden>
+      <div class="hero"><h1>Watercolor</h1><p class="lede">can specify materials, methods, locations here</p></div>
+      <div class="grid">
+        <div class="card"><div class="swatch" style="background:linear-gradient(160deg,#9fb8c4,#4a6d80 60%,#26404d);"></div><div class="card-body"><h3>Low Tide</h3><p>Watercolor on cotton paper · 2025</p></div></div>
+        <div class="card"><div class="swatch" style="background:linear-gradient(160deg,#e8c46b,#c98a3e 60%,#8a5620);"></div><div class="card-body"><h3>Marigold Study</h3><p>Watercolor on cotton paper · 2024</p></div></div>
+        <div class="card"><div class="swatch" style="background:linear-gradient(160deg,#a9b98f,#5c6e4a 60%,#33401f);"></div><div class="card-body"><h3>After Rain</h3><p>Watercolor on cotton paper · 2024</p></div></div>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="oil" hidden>
+      <div class="hero"><h1>Oil Paint</h1><p class="lede">can specify materials, methods, locations here</p></div>
+      <div class="grid">
+        <div class="card"><div class="swatch" style="background:linear-gradient(160deg,#d7b98a,#a9743f 60%,#5c3d1f);"></div><div class="card-body"><h3>Kitchen Window</h3><p>Oil on canvas · 2025</p></div></div>
+        <div class="card"><div class="swatch" style="background:linear-gradient(160deg,#c9a227,#8a6a17 60%,#463508);"></div><div class="card-body"><h3>Portrait in Ochre</h3><p>Oil on canvas · 2024</p></div></div>
+        <div class="card"><div class="swatch" style="background:linear-gradient(160deg,#31435c,#1f3d5c 60%,#0f1e2c);"></div><div class="card-body"><h3>Nocturne No. 2</h3><p>Oil on board · 2023</p></div></div>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="digital" hidden>
+      <div class="hero"><h1>Digital</h1><p class="lede">some catchy about here</p></div>
+      <div class="grid">
+        <div class="card"><div class="swatch" style="background:conic-gradient(from 180deg,#1f3d5c,#b4482f,#c9a227,#1f3d5c);"></div><div class="card-body"><h3>Fragment_04</h3><p>Digital, Procreate · 2025</p></div></div>
+        <div class="card"><div class="swatch" style="background:radial-gradient(circle at 30% 30%,#e8c46b,#b4482f 70%);"></div><div class="card-body"><h3>Static Bloom</h3><p>Digital, Photoshop · 2025</p></div></div>
+        <div class="card"><div class="swatch" style="background:linear-gradient(135deg,#3d5a70,#1f3d5c 50%,#101d29);"></div><div class="card-body"><h3>Interface Ghost</h3><p>Digital, Procreate · 2024</p></div></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- code page -->
+<div class="site" id="code-site" hidden>
+  <nav class="topnav">
+    <a class="logo" href="#/">Annabelle Chen</a>
+    <div class="tabs" data-site="code">
+      <button data-tab="home">Home</button>
+      <button data-tab="about">About</button>
+      <button data-tab="research">Research</button>
+      <button data-tab="projects">Personal Projects</button>
+    </div>
+    <a class="back-link" href="#/">← Both</a>
+  </nav>
+
+  <main class="panel-wrap">
+
+    <section class="panel" data-panel="home">
+      <p class="term-line"><span class="prompt">$</span> whoami</p>
+      <p class="term-line out">annabelle chen — systems &amp; hardware enthusiast</p>
+      <p class="term-line"><span class="prompt">$</span> cat mission.txt</p>
+      <div class="hero" style="margin-top:.5rem;">
+        <h1>Precise things,<br>built in text.</h1>
+        <p class="lede">sentence on contents: research projects, personal endeavors like games<span class="cursor"></span></p>
+      </div>
+      <p class="crosslink"><a href="#/art">Looking for the art side instead? →</a></p>
+    </section>
+
+    <section class="panel" data-panel="about" hidden>
+      <div class="hero"><h1>&gt; about</h1></div>
+      <p class="bio">personal bio as a programmer</p>
+      <div class="skills-block">
+        <div><span class="k">languages:</span> Java, Python, C</div>
+        <div><span class="k">focus:</span> systems & computer architecture, embedded systems, security, hardware</div>
+        <div><span class="k">currently:</span> matrix transformation algorithm parallelization</div>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="research" hidden>
+      <div class="hero"><h1>&gt; research</h1><p class="lede">My past experiences!</p></div>
+      <div class="proj-grid">
+        <div class="proj-card">
+          <h3>Latency-aware caching for edge inference</h3>
+          <p>A cache eviction policy that weighs model latency alongside recency, tested against three open-source serving stacks.</p>
+          <div class="tags"><span class="tag">systems</span><span class="tag">ml</span><span class="tag">rust</span></div>
+          <a class="proj-link" href="#">Read the write-up →</a>
+        </div>
+        <div class="proj-card">
+          <h3>Approximate nearest neighbor search at scale</h3>
+          <p>Comparing HNSW and IVF-PQ indexes under real query load, with notes on where each one quietly falls over.</p>
+          <div class="tags"><span class="tag">search</span><span class="tag">vector-db</span></div>
+          <a class="proj-link" href="#">Read the write-up →</a>
+        </div>
+        <div class="proj-card">
+          <h3>Human-in-the-loop labeling pipelines</h3>
+          <p>Notes on building review queues that catch model drift before it reaches a dashboard.</p>
+          <div class="tags"><span class="tag">mlops</span><span class="tag">data</span></div>
+          <a class="proj-link" href="#">Read the write-up →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="projects" hidden>
+      <div class="hero"><h1>&gt; personal projects</h1><p class="lede">things just for me!</p></div>
+      <div class="proj-grid">
+        <div class="proj-card">
+          <h3>project #1 name</h3>
+          <p>sentence long description</p>
+          <div class="tags"><span class="tag">rust</span><span class="tag">cli</span></div>
+          <a class="proj-link" href="#">View on GitHub →</a>
+        </div>
+        <div class="proj-card">
+          <h3>project #2 name</h3>
+          <p>sentence long description</p>
+          <div class="tags"><span class="tag">typescript</span><span class="tag">react</span></div>
+          <a class="proj-link" href="#">View on GitHub →</a>
+        </div>
+        <div class="proj-card">
+          <h3>project #3 name</h3>
+          <p>sentence long description</p>
+          <div class="tags"><span class="tag">webgl</span><span class="tag">canvas</span></div>
+          <a class="proj-link" href="#">View on GitHub →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var landing = document.getElementById('landing');
+  var sites = { art: document.getElementById('art-site'), code: document.getElementById('code-site') };
+
+  function parseHash(){
+    // formats: '', '#/', '#/art', '#/art/watercolor', '#/code', '#/code/research'
+    var h = location.hash.replace(/^#\/?/, '');
+    if(!h) return { site:null, tab:null };
+    var parts = h.split('/').filter(Boolean);
+    return { site: parts[0], tab: parts[1] || 'home' };
+  }
+
+  function render(){
+    var route = parseHash();
+    if(!route.site || !sites[route.site]){
+      landing.hidden = false;
+      sites.art.hidden = true;
+      sites.code.hidden = true;
+      document.title = 'Annabelle Chen — Art & Code';
+      return;
+    }
+    landing.hidden = true;
+    Object.keys(sites).forEach(function(key){
+      sites[key].hidden = (key !== route.site);
+    });
+
+    var active = sites[route.site];
+    var panels = active.querySelectorAll('[data-panel]');
+    var found = false;
+    panels.forEach(function(p){
+      var match = p.getAttribute('data-panel') === route.tab;
+      p.hidden = !match;
+      if(match) found = true;
+    });
+    if(!found){
+      panels.forEach(function(p, i){ p.hidden = i !== 0; });
+    }
+
+    var buttons = active.querySelectorAll('.tabs button');
+    buttons.forEach(function(b){
+      b.classList.toggle('active', b.getAttribute('data-tab') === (found ? route.tab : panels[0].getAttribute('data-panel')));
+    });
+
+    var label = route.site === 'art' ? 'Art' : 'Code';
+    document.title = 'Jordan Ames — ' + label;
+    window.scrollTo(0,0);
+  }
+
+  document.querySelectorAll('.tabs button').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var site = btn.closest('.tabs').getAttribute('data-site');
+      var tab = btn.getAttribute('data-tab');
+      location.hash = '#/' + site + '/' + tab;
+    });
+  });
+
+  window.addEventListener('hashchange', render);
+  render();
+})();
+</script>
+
+</body>
+</html>
