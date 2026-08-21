@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jordan Ames — Art &amp; Code</title>
+<title>Annabelle Chen — Art &amp; Code</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -134,9 +134,19 @@
   #art-site nav.topnav{background:rgba(241,236,224,.88);border-bottom:1px solid rgba(33,28,22,.1);}
   #code-site nav.topnav{background:rgba(20,24,26,.9);border-bottom:1px solid rgba(231,236,233,.12);}
 
-  .logo{font-size:1rem;font-weight:600;letter-spacing:.01em;}
-  #art-site .logo{font-family:'Fraunces',serif;font-style:italic;font-size:1.25rem;}
-  #code-site .logo::before{content:"~/";color:var(--code-1);}
+  .nav-name{
+    font-size:1.15rem;
+    font-weight:600;
+    letter-spacing:.01em;
+    padding:.4rem .6rem;
+    margin:-.4rem -.6rem;
+    border-radius:var(--radius);
+    transition:background .2s, opacity .2s;
+  }
+  #art-site .nav-name{font-family:'Fraunces',serif;font-style:italic;font-size:1.4rem;}
+  #art-site .nav-name:hover{background:rgba(31,61,92,.08);}
+  #code-site .nav-name::before{content:"~/";color:var(--code-1);}
+  #code-site .nav-name:hover{background:rgba(63,166,107,.1);}
 
   .tabs{display:flex;gap:.4rem;flex-wrap:wrap;}
   .tabs button{
@@ -151,9 +161,6 @@
   #code-site .tabs button{font-family:'JetBrains Mono',monospace;}
   #code-site .tabs button.active{background:var(--code-1);color:var(--code-bg);}
   #code-site .tabs button:not(.active):hover{background:rgba(63,166,107,.12);}
-
-  .back-link{font-size:.75rem;opacity:.6;}
-  .back-link:hover{opacity:1;}
 
   main.panel-wrap{padding:0 clamp(1.25rem,4vw,3rem) 6rem;}
   .panel{max-width:920px;margin:0 auto;padding-top:3.5rem;}
@@ -232,17 +239,17 @@
 <!-- landing page -->
 <section id="landing">
   <div class="seam"></div>
-  <div class="signature"><span class="s-art">Jordan</span><span class="s-code">Ames</span></div>
+  <div class="signature"><span class="s-art">Annabelle</span><span class="s-code">Chen</span></div>
 
   <div class="half art" tabindex="0">
     <p class="half-label">Art</p>
-    <p class="half-tag">Watercolor, oil, and digital work — things made slowly, by hand or by light.</p>
+    <p class="half-tag">cool and catchy artist one-liner</p>
     <a class="enter-btn" href="#/art">Enter</a>
   </div>
 
   <div class="half code" tabindex="0">
     <p class="half-label">Code</p>
-    <p class="half-tag">Research and personal projects — things made precisely, in text.</p>
+    <p class="half-tag">cool and catchy programmer one-liner</p>
     <a class="enter-btn" href="#/code">Enter</a>
   </div>
 </section>
@@ -250,7 +257,6 @@
 <!-- art page -->
 <div class="site" id="art-site" hidden>
   <nav class="topnav">
-    <a class="logo" href="#/">Annabelle Chen</a>
     <div class="tabs" data-site="art">
       <button data-tab="home">Home</button>
       <button data-tab="about">About</button>
@@ -258,7 +264,7 @@
       <button data-tab="oil">Oil Paint</button>
       <button data-tab="digital">Digital</button>
     </div>
-    <a class="back-link" href="#/">← Both</a>
+    <a class="nav-name" href="#/">Jordan Ames</a>
   </nav>
 
   <main class="panel-wrap">
@@ -273,7 +279,7 @@
         <div class="swatch" style="background:linear-gradient(135deg,#c98a58,#7a3b2e);"></div>
         <div class="swatch" style="background:linear-gradient(135deg,#5c6e4a,#2c3520);"></div>
       </div>
-      <p class="crosslink"><a href="#/code">Looking for the code side instead? →</a></p>
+      <p class="crosslink"><a href="#/code">Want to see some code instead? →</a></p>
     </section>
 
     <section class="panel" data-panel="about" hidden>
@@ -314,14 +320,13 @@
 <!-- code page -->
 <div class="site" id="code-site" hidden>
   <nav class="topnav">
-    <a class="logo" href="#/">Annabelle Chen</a>
     <div class="tabs" data-site="code">
       <button data-tab="home">Home</button>
       <button data-tab="about">About</button>
       <button data-tab="research">Research</button>
       <button data-tab="projects">Personal Projects</button>
     </div>
-    <a class="back-link" href="#/">← Both</a>
+    <a class="nav-name" href="#/">Jordan Ames</a>
   </nav>
 
   <main class="panel-wrap">
@@ -334,7 +339,7 @@
         <h1>Precise things,<br>built in text.</h1>
         <p class="lede">sentence on contents: research projects, personal endeavors like games<span class="cursor"></span></p>
       </div>
-      <p class="crosslink"><a href="#/art">Looking for the art side instead? →</a></p>
+      <p class="crosslink"><a href="#/art">Want to see some art instead? →</a></p>
     </section>
 
     <section class="panel" data-panel="about" hidden>
@@ -443,7 +448,7 @@
     });
 
     var label = route.site === 'art' ? 'Art' : 'Code';
-    document.title = 'Jordan Ames — ' + label;
+    document.title = 'Annabelle Chen — ' + label;
     window.scrollTo(0,0);
   }
 
